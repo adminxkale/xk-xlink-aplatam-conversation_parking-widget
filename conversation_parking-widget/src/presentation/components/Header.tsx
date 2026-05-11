@@ -9,7 +9,7 @@ export function Header() {
         className="h-8 w-auto"
       />
       <h1 className="text-lg font-semibold text-gray-900">
-        Conversation Parking
+        Conversation Parking Hub
       </h1>
     </header>
   );
