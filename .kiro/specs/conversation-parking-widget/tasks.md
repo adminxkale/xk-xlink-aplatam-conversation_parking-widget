@@ -97,7 +97,7 @@ Implementación incremental del widget de parqueo de conversaciones para Genesys
   - [x] 5.1 Implementar Route Handler `POST /api/send-template`
     - Crear `app/api/send-template/route.ts` con handler POST
     - Validar campos requeridos (`destinationLine`, `conversationId`), retornar 400 si faltan
-    - Construir Basic Auth desde `NEXT_PUBLIC_BASIC_AUTH_USER` y `NEXT_PUBLIC_BASIC_AUTH_PASS`
+    - Construir Basic Auth desde `BASIC_AUTH_USER` y `BASIC_AUTH_PASS`
     - Proxy al endpoint externo de Infobip
     - Retornar errores apropiados (400, 502, 504)
     - _Requisitos: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6_
@@ -190,7 +190,7 @@ Implementación incremental del widget de parqueo de conversaciones para Genesys
     - Asegurar diseño responsivo para contexto embebido en Genesys Cloud
     - _Requisitos: 4.6, 9.5, 10.1_
   - [x] 8.3 Crear archivo `.env.local.example` con variables de entorno requeridas
-    - Documentar: `NEXT_PUBLIC_GENESYS_CLIENT_ID`, `NEXT_PUBLIC_GENESYS_ENVIRONMENT`, `NEXT_PUBLIC_BASIC_AUTH_USER`, `NEXT_PUBLIC_BASIC_AUTH_PASS`
+    - Documentar: `NEXT_PUBLIC_GENESYS_CLIENT_ID`, `NEXT_PUBLIC_GENESYS_ENVIRONMENT`, `BASIC_AUTH_USER`, `BASIC_AUTH_PASS`
     - _Requisitos: 1.6, 7.3_
   - [x] 8.4 Escribir tests de integración
     - Test: flujo completo de desparqueo (toggle → llamada API proxy → actualización visual)

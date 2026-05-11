@@ -107,7 +107,7 @@ Widget embebido para Genesys Cloud que permite a los agentes de un centro de con
 
 1. THE API_Proxy_de_Plantillas SHALL exponer un endpoint POST en la ruta `/api/send-template` de Next.js.
 2. WHEN la API_Proxy_de_Plantillas recibe una solicitud válida, THE API_Proxy_de_Plantillas SHALL reenviar la solicitud al endpoint `https://uqll2l7vg0.execute-api.us-east-1.amazonaws.com/dev/send-template` con autenticación Basic Auth.
-3. THE API_Proxy_de_Plantillas SHALL construir las credenciales Basic Auth a partir de las variables de entorno NEXT_PUBLIC_BASIC_AUTH_USER y NEXT_PUBLIC_BASIC_AUTH_PASS.
+3. THE API_Proxy_de_Plantillas SHALL construir las credenciales Basic Auth a partir de las variables de entorno BASIC_AUTH_USER y BASIC_AUTH_PASS.
 4. IF la solicitud al endpoint externo falla, THEN THE API_Proxy_de_Plantillas SHALL retornar un código de estado HTTP apropiado y un mensaje de error descriptivo al cliente.
 5. IF la solicitud recibida no contiene los campos requeridos, THEN THE API_Proxy_de_Plantillas SHALL retornar un código de estado HTTP 400 con un mensaje indicando los campos faltantes.
 6. WHEN la API_Proxy_de_Plantillas recibe una solicitud con un método HTTP diferente a POST, THE API_Proxy_de_Plantillas SHALL retornar un código de estado HTTP 405.

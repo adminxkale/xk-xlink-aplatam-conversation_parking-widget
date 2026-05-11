@@ -33,8 +33,8 @@ export async function POST(request: Request) {
   }
 
   // 3. Build Basic Auth
-  const user = process.env.NEXT_PUBLIC_BASIC_AUTH_USER ?? '';
-  const pass = process.env.NEXT_PUBLIC_BASIC_AUTH_PASS ?? '';
+  const user = process.env.BASIC_AUTH_USER ?? '';
+  const pass = process.env.BASIC_AUTH_PASS ?? '';
   const authorization = buildBasicAuth(user, pass);
 
   // 4. Proxy to external endpoint
