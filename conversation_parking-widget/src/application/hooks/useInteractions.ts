@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import type { Interaction } from "../../domain/entities/interaction";
+import type { ToastType } from "../../domain/entities/toast";
 import {
   getInteractionService,
 } from "../../infrastructure/config/service-registry";
@@ -19,7 +20,8 @@ interface UseInteractionsResult {
 
 export function useInteractions(
   agentId: string | null,
-  token: string | null
+  token: string | null,
+  addToast?: (params: { type: ToastType; message: string }) => void
 ): UseInteractionsResult {
   const [interactions, setInteractions] = useState<Interaction[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -75,10 +77,13 @@ export function useInteractions(
 
         // Refetch interactions after successful unpark
         await fetchInteractions();
+
+        addToast?.({ type: 'success', message: 'Conversación desparqueada exitosamente' });
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Error al desparquear la conversación"
-        );
+        const message = err instanceof Error
+          ? err.message
+          : "No se pudo desparquear la conversación. Intenta de nuevo.";
+        addToast?.({ type: 'error', message });
       } finally {
         setSendingIds((prev) => {
           const next = new Set(prev);
@@ -87,7 +92,7 @@ export function useInteractions(
         });
       }
     },
-    [interactions, token]
+    [interactions, token, addToast, fetchInteractions]
   );
 
   const retry = useCallback(() => {

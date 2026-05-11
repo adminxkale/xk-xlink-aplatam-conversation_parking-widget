@@ -89,6 +89,12 @@ describe("useInteractions", () => {
       expect(result.current.isLoading).toBe(false);
     });
 
+    // After unpark succeeds, fetchInteractions is called again — return updated list
+    mockGetInteractions.mockResolvedValue([
+      { ...fakeInteractions[0], isParked: false },
+      fakeInteractions[1],
+    ]);
+
     await act(async () => {
       await result.current.unpark("c1");
     });

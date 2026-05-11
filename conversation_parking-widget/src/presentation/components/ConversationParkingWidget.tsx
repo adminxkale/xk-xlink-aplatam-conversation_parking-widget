@@ -1,13 +1,16 @@
 "use client";
 
 import { useAuthContext } from "../providers/AuthContext";
+import { useToastContext } from "../providers/ToastContext";
 import { useAgentLines } from "../../application/hooks/useAgentLines";
 import { useInteractions } from "../../application/hooks/useInteractions";
 import { Header } from "./Header";
 import { LineSelector } from "./LineSelector";
 import { InteractionList } from "./InteractionList";
+import { ToastProvider } from "./ToastProvider";
 
-export function ConversationParkingWidget() {
+function ConversationParkingWidgetInner() {
+  const { addToast } = useToastContext();
   const { agentGroupIds, agent, token } = useAuthContext();
   const {
     lines,
@@ -16,7 +19,7 @@ export function ConversationParkingWidget() {
     isLoading: linesLoading,
   } = useAgentLines(agentGroupIds);
   const { interactions, isLoading, error, unpark, sendingIds, retry } =
-    useInteractions(agent?.id ?? null, token);
+    useInteractions(agent?.id ?? null, token, addToast);
 
   // Filter interactions by selected line (origin line = line.phone_number)
   const filteredInteractions = selectedLineId
@@ -30,7 +33,7 @@ export function ConversationParkingWidget() {
     : interactions;
 
   const handleLineSelect = (lineId: string) => {
-    setSelectedLineId(lineId || null);
+    setSelectedLineId(lineId);
   };
 
   return (
@@ -53,5 +56,13 @@ export function ConversationParkingWidget() {
         />
       </div>
     </div>
+  );
+}
+
+export function ConversationParkingWidget() {
+  return (
+    <ToastProvider>
+      <ConversationParkingWidgetInner />
+    </ToastProvider>
   );
 }
