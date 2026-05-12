@@ -1,9 +1,11 @@
 "use client";
 
+import { useMemo } from "react";
 import { useAuthContext } from "../providers/AuthContext";
 import { useToastContext } from "../providers/ToastContext";
 import { useAgentLines } from "../../application/hooks/useAgentLines";
 import { useInteractions } from "../../application/hooks/useInteractions";
+import { useQueueNames } from "../../application/hooks/useQueueNames";
 import { Header } from "./Header";
 import { LineSelector } from "./LineSelector";
 import { InteractionList } from "./InteractionList";
@@ -20,6 +22,12 @@ function ConversationParkingWidgetInner() {
   } = useAgentLines(agentGroupIds);
   const { interactions, isLoading, error, unpark, sendingIds, retry } =
     useInteractions(agent?.id ?? null, token, addToast);
+
+  const queueIds = useMemo(
+    () => interactions.map((i) => i.queueId).filter((id): id is string => !!id),
+    [interactions]
+  );
+  const queueNames = useQueueNames(queueIds, token);
 
   // Filter interactions by selected line (origin line = line.phone_number)
   const filteredInteractions = selectedLineId
@@ -53,6 +61,7 @@ function ConversationParkingWidgetInner() {
           onRetry={retry}
           onUnpark={unpark}
           sendingIds={sendingIds}
+          queueNames={queueNames}
         />
       </div>
 

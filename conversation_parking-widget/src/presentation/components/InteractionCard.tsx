@@ -12,9 +12,10 @@ interface InteractionCardProps {
   interaction: Interaction;
   onUnpark: (id: string) => void;
   isSending: boolean;
+  queueName?: string;
 }
 
-export function InteractionCard({ interaction, onUnpark, isSending }: InteractionCardProps) {
+export function InteractionCard({ interaction, onUnpark, isSending, queueName }: InteractionCardProps) {
   const { display, isExpired } = useDurationTimer(interaction.startTimestamp);
 
   return (
@@ -29,6 +30,11 @@ export function InteractionCard({ interaction, onUnpark, isSending }: Interactio
         {interaction.isParked && interaction.agentName && (
           <p className="mb-1 text-xs text-gray-500">
             Conversación parqueada por <span className="font-semibold text-black">{interaction.agentName}</span>
+          </p>
+        )}
+        {interaction.isParked && queueName && (
+          <p className="mb-1 text-xs text-gray-500">
+            Parqueada en la cola: <span className="font-semibold text-black">{queueName}</span>
           </p>
         )}
         <div className="flex items-center gap-2 text-sm">

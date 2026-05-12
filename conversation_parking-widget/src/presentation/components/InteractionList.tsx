@@ -13,6 +13,7 @@ interface InteractionListProps {
   onRetry: () => void;
   onUnpark: (id: string) => Promise<void>;
   sendingIds: Set<string>;
+  queueNames?: Record<string, string>;
 }
 
 export function InteractionList({
@@ -22,6 +23,7 @@ export function InteractionList({
   onRetry,
   onUnpark,
   sendingIds,
+  queueNames = {},
 }: InteractionListProps) {
   if (isLoading) return <SkeletonLoader />;
   if (error) return <ErrorMessage message={error} onRetry={onRetry} />;
@@ -35,6 +37,7 @@ export function InteractionList({
           interaction={interaction}
           onUnpark={onUnpark}
           isSending={sendingIds.has(interaction.id)}
+          queueName={interaction.queueId ? queueNames[interaction.queueId] : undefined}
         />
       ))}
     </div>
