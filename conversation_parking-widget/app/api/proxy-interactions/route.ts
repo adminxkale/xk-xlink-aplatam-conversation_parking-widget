@@ -4,7 +4,7 @@ const BASE_URL = 'https://1p7yki6h17.execute-api.us-east-1.amazonaws.com/dev';
 
 function buildBasicAuth(): string {
   const user = process.env.BASIC_AUTH_USER ?? '';
-  const pass = process.env.BASIC_AUTH_PASS ?? '';
+  const pass = process.env.NEXT_PUBLIC_BASIC_AUTH_PASS ?? '';
   //const pass =''
   return 'Basic ' + Buffer.from(`${user}:${pass}`).toString('base64');
 }
