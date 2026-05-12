@@ -6,6 +6,7 @@ function buildBasicAuth(): string {
   const user = process.env.NEXT_PUBLIC_BASIC_AUTH_USER ?? '';
   const pass = process.env.NEXT_PUBLIC_BASIC_AUTH_PASS ?? '';
   //const pass =''
+  console.log("Auth:", user + ":" + pass)
   return 'Basic ' + Buffer.from(`${user}:${pass}`).toString('base64');
 }
 
