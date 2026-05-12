@@ -59,9 +59,9 @@ export function InteractionCard({ interaction, onUnpark, isSending }: Interactio
       {interaction.isParked && (
         <button
           onClick={() => onUnpark(interaction.id)}
-          disabled={isSending}
+          disabled={isSending || isExpired}
           className="min-w-[44px] min-h-[44px] px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 bg-green-600 hover:bg-green-700 text-white focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label={isSending ? 'Procesando...' : 'Desparquear conversación'}
+          aria-label={isExpired ? 'Sesión expirada' : isSending ? 'Procesando...' : 'Desparquear conversación'}
         >
           {isSending ? '...' : 'Desparquear'}
         </button>
