@@ -5,10 +5,12 @@ import { useAuthContext } from "../providers/AuthContext";
 import { useToastContext } from "../providers/ToastContext";
 import { useAgentLines } from "../../application/hooks/useAgentLines";
 import { useInteractions } from "../../application/hooks/useInteractions";
+import { useConversationNotifications } from "../../application/hooks/useConversationNotifications";
 import { useQueueNames } from "../../application/hooks/useQueueNames";
 import { Header } from "./Header";
 import { LineSelector } from "./LineSelector";
 import { InteractionList } from "./InteractionList";
+import { ConnectionStatusIndicator } from "./ConnectionStatusIndicator";
 import { ToastProvider } from "./ToastProvider";
 
 function ConversationParkingWidgetInner() {
@@ -22,6 +24,12 @@ function ConversationParkingWidgetInner() {
   } = useAgentLines(agentGroupIds);
   const { interactions, isLoading, error, unpark, sendingIds, retry } =
     useInteractions(agent?.id ?? null, token, addToast);
+
+  const { connectionStatus } = useConversationNotifications(
+    agent?.id ?? null,
+    token,
+    retry
+  );
 
   const queueIds = useMemo(
     () => interactions.map((i) => i.queueId).filter((id): id is string => !!id),
@@ -65,30 +73,33 @@ function ConversationParkingWidgetInner() {
         />
       </div>
 
-      {/* Floating refresh button */}
-      <button
-        type="button"
-        onClick={retry}
-        disabled={isLoading}
-        className="fixed bottom-4 right-4 z-40 w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 active:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        aria-label="Actualizar interacciones"
-        title="Actualizar interacciones"
-      >
-        <svg
-          className={`w-5 h-5 ${isLoading ? "animate-spin" : ""}`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-          aria-hidden="true"
+      {/* Floating refresh button with connection status indicator */}
+      <div className="fixed bottom-4 right-4 z-40 flex items-center gap-2">
+        <ConnectionStatusIndicator status={connectionStatus} />
+        <button
+          type="button"
+          onClick={retry}
+          disabled={isLoading}
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 active:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          aria-label="Actualizar interacciones"
+          title="Actualizar interacciones"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-          />
-        </svg>
-      </button>
+          <svg
+            className={`w-5 h-5 ${isLoading ? "animate-spin" : ""}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 }
